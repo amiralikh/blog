@@ -60,4 +60,11 @@ class PostRepo
     {
         $post->tags()->sync($tagIds);
     }
+
+    public function findPostByTag($tag){
+        return Post::with(['user','tags'])
+            ->whereHas('tags', function ($query) use ($tag) {
+                $query->where('name', $tag);
+            })->orderByDesc('created_at')->get();
+    }
 }

@@ -9,23 +9,25 @@ use Illuminate\Support\Facades\Auth;
 class CommentController extends Controller
 {
     // Store a newly created comment in the database
-    public function store(Request $request, Post $post): \Illuminate\Http\RedirectResponse
+    public function store(Request $request): \Illuminate\Http\RedirectResponse
     {
         $validatedData = $request->validate([
             'content' => 'required',
+            'post_id' => 'required|exists:posts,id'
         ]);
-
+        $post = Post::query()->findOrFail($request->input('post_id'));
         $comment = new Comment($validatedData);
         $comment->user_id = Auth::id();
         $post->comments()->save($comment);
 
-        session()->flash('success', 'Comment submitted successfully.');
+        session()->flash('success', 'Comment submitted successfully and after approving you can see that.');
         return back();
     }
 
     // Approve the specified comment
-    public function approve(Comment $comment): \Illuminate\Http\RedirectResponse
+    public function approve($id): \Illuminate\Http\RedirectResponse
     {
+        $comment = Comment::query()->findOrFail($id);
         $comment->update(['is_approved' => true]);
 
         session()->flash('success', 'Comment approved successfully.');
@@ -34,9 +36,10 @@ class CommentController extends Controller
     }
 
     // Show the form for editing the specified comment
-    public function edit(Comment $comment): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
+    public function edit($id): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
-        return view('comments.edit', compact('comment'));
+        $comment = Comment::query()->findOrFail($id);
+        return view('comments.show', compact('comment'));
     }
 
     // Update the specified comment in the database
@@ -59,5 +62,11 @@ class CommentController extends Controller
         $comment->delete();
         session()->flash('success', 'Comment deleted successfully.');
         return back();
+    }
+
+    public function index()
+    {
+        $comments = Comment::with('post','user')->orderByDesc('created_at')->paginate(10);
+        return view('comments.index',compact('comments'));
     }
 }

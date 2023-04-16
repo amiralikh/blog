@@ -88,4 +88,10 @@ class PostController extends Controller
         request()->session()->flash('success', 'Your post deleted successfully');
         return redirect()->route('posts.index');
     }
+
+    public function findByTag($tag)
+    {
+        $posts = $this->repo->findPostByTag($tag);
+        return view('posts.list-tags',compact('posts','tag'));
+    }
 }

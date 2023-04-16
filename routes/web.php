@@ -23,9 +23,14 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::resource('posts',\App\Http\Controllers\PostController::class);
+    Route::get('posts/tags/{tag_name}',[\App\Http\Controllers\PostController::class,'findByTag'])->name('posts.tags');
     Route::get('my-posts',[\App\Http\Controllers\PostController::class,'userPosts'])->name('user.posts');
     Route::resource('tags',\App\Http\Controllers\TagController::class);
-    Route::resource('comments',\App\Http\Controllers\CommentController::class);
+    Route::get('comments',[\App\Http\Controllers\CommentController::class,'index'])->name('comments.index');
+    Route::post('comments',[\App\Http\Controllers\CommentController::class,'index'])->name('comments.store');
+    Route::post('comments/{id}/approve',[\App\Http\Controllers\CommentController::class,'approve'])->name('comments.approve');
+    Route::get('comments/{id}/edit',[\App\Http\Controllers\CommentController::class,'edit'])->name('comments.edit');
+    Route::delete('comments/{id}',[\App\Http\Controllers\CommentController::class,'destroy'])->name('comments.destroy');
 
 });
 
