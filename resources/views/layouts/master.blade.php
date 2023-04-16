@@ -95,7 +95,7 @@
                 <a class="nav-link text-white " href="{{ url('/tags') }}">
 
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="material-icons opacity-10">home</i>
+                        <i class="material-icons opacity-10">ads_click</i>
                     </div>
 
                     <span class="nav-link-text ms-1">Tags</span>
@@ -105,7 +105,7 @@
                 <a class="nav-link text-white " href="{{ url('/tags/create') }}">
 
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="material-icons opacity-10">home</i>
+                        <i class="material-icons opacity-10">add_circle</i>
                     </div>
 
                     <span class="nav-link-text ms-1">Create Tag</span>
@@ -115,7 +115,7 @@
                 <a class="nav-link text-white " href="{{ url('/posts/create') }}">
 
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="material-icons opacity-10">home</i>
+                        <i class="material-icons opacity-10">add</i>
                     </div>
 
                     <span class="nav-link-text ms-1">New Post</span>
@@ -126,7 +126,7 @@
                     <a class="nav-link text-white " href="{{ url('/my-posts') }}">
 
                         <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                            <i class="material-icons opacity-10">home</i>
+                            <i class="material-icons opacity-10">view_timeline</i>
                         </div>
 
                         <span class="nav-link-text ms-1">My Posts</span>
@@ -137,7 +137,7 @@
                 <a class="nav-link text-white " href="{{ url('/posts') }}">
 
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="material-icons opacity-10">home</i>
+                        <i class="material-icons opacity-10">dataset</i>
                     </div>
 
                     <span class="nav-link-text ms-1">Posts</span>
@@ -148,7 +148,7 @@
                 <a class="nav-link text-white " href="{{ url('/comments') }}">
 
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="material-icons opacity-10">home</i>
+                        <i class="material-icons opacity-10">indeterminate_check_box</i>
                     </div>
 
                     <span class="nav-link-text ms-1">Comments</span>
