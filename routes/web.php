@@ -27,7 +27,7 @@ Route::middleware('auth')->group(function () {
     Route::get('my-posts',[\App\Http\Controllers\PostController::class,'userPosts'])->name('user.posts');
     Route::resource('tags',\App\Http\Controllers\TagController::class);
     Route::get('comments',[\App\Http\Controllers\CommentController::class,'index'])->name('comments.index');
-    Route::post('comments',[\App\Http\Controllers\CommentController::class,'index'])->name('comments.store');
+    Route::post('comments',[\App\Http\Controllers\CommentController::class,'store'])->name('comments.store');
     Route::post('comments/{id}/approve',[\App\Http\Controllers\CommentController::class,'approve'])->name('comments.approve');
     Route::get('comments/{id}/edit',[\App\Http\Controllers\CommentController::class,'edit'])->name('comments.edit');
     Route::delete('comments/{id}',[\App\Http\Controllers\CommentController::class,'destroy'])->name('comments.destroy');
