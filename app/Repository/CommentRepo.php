@@ -4,12 +4,18 @@ namespace App\Repository;
 
 use App\Models\Comment;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Auth;
 
 class CommentRepo
 {
-    public function create(array $data): Comment
+    public function create($request): \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Builder
     {
-        return Comment::create($data);
+
+        return Comment::query()->create([
+            'content' => $request->input('content'),
+            'post_id' => $request->input('post_id'),
+            'user_id' => Auth::id(),
+        ]);
     }
 
     public function findOrFail(int $id): Comment

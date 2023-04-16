@@ -1,66 +1,75 @@
 <?php
+
 namespace App\Http\Controllers;
 
-use App\Models\Tag;
+use App\Repository\TagRepo;
 use Illuminate\Http\Request;
 
 class TagController extends Controller
 {
-    // Display a listing of the tags
+    protected $tagRepository;
+
+    public function __construct(TagRepo $tagRepo)
+    {
+        $this->tagRepository = $tagRepo;
+    }
+
     public function index()
     {
-        $tags = Tag::query()->orderByDesc('name')->paginate(10);
+        $tags = $this->tagRepository->getAllTags();
         return view('tags.index', compact('tags'));
     }
 
-    // Show the form for creating a new tag
     public function create()
     {
         return view('tags.create');
     }
 
-    // Store a newly created tag in the database
     public function store(Request $request)
     {
         $validatedData = $request->validate([
             'name' => 'required|unique:tags|max:255',
         ]);
 
-        Tag::query()->create($validatedData);
+        $this->tagRepository->createTag($validatedData['name']);
 
         session()->flash('success', 'Tag created successfully.');
 
         return redirect()->route('tags.index');
     }
 
-    // Display the specified tag
-    public function show(Tag $tag)
+    public function show($id)
     {
         return abort(404);
     }
 
-    // Show the form for editing the specified tag
-    public function edit(Tag $tag)
+    public function edit($id)
     {
+        $tag = $this->tagRepository->findTagById($id);
         return view('tags.edit', compact('tag'));
     }
 
-    // Update the specified tag in the database
-    public function update(Request $request, Tag $tag)
+    public function update(Request $request, $id)
     {
         $validatedData = $request->validate([
-            'name' => 'required|unique:tags,name,' . $tag->id . '|max:255',
+            'name' => 'required|unique:tags,name,' . $id . '|max:255',
         ]);
-        $tag->update($validatedData);
+
+        $tag = $this->tagRepository->findTagById($id);
+        $this->tagRepository->updateTag($tag, $validatedData['name']);
+
         session()->flash('success', 'Tag updated successfully.');
+
         return redirect()->route('tags.index');
     }
 
-    // Remove the specified tag from the database
-    public function destroy(Tag $tag)
+    public function destroy($id)
     {
-        $tag->delete();
+        $tag = $this->tagRepository->findTagById($id);
+        $this->tagRepository->deleteTag($tag);
+
         session()->flash('success', 'Tag deleted successfully.');
+
         return redirect()->route('tags.index');
     }
 }

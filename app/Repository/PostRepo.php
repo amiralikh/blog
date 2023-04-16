@@ -31,7 +31,6 @@ class PostRepo
     public function getPost($id)
     {
         return Post::with('user','comments','tags')->findOrFail($id);
-
     }
 
 

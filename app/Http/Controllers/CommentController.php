@@ -8,7 +8,9 @@ use App\Models\Comment;
 use App\Models\Post;
 use App\Repositories\CommentRepository;
 use App\Repository\CommentRepo;
+use App\Repository\PostRepo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
@@ -22,8 +24,9 @@ class CommentController extends Controller
 
     public function store(Store $request): \Illuminate\Http\RedirectResponse
     {
-        $post = Post::query()->findOrFail($request->input('post_id'));
-        $comment = $this->commentRepository->create($request + ['user_id' => Auth::id()]);
+        $post = App::make(PostRepo::class)->getPost($request->input('post_id'));
+
+        $comment = $this->commentRepository->create($request);
         $post->comments()->save($comment);
 
         session()->flash('success', 'Comment submitted successfully and after approving you can see that.');
