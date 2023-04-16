@@ -49,7 +49,7 @@ class TagController extends Controller
         return view('tags.edit', compact('tag'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): \Illuminate\Http\RedirectResponse
     {
         $validatedData = $request->validate([
             'name' => 'required|unique:tags,name,' . $id . '|max:255',
@@ -63,13 +63,11 @@ class TagController extends Controller
         return redirect()->route('tags.index');
     }
 
-    public function destroy($id)
+    public function destroy($id): \Illuminate\Http\RedirectResponse
     {
         $tag = $this->tagRepository->findTagById($id);
         $this->tagRepository->deleteTag($tag);
-
         session()->flash('success', 'Tag deleted successfully.');
-
         return redirect()->route('tags.index');
     }
 }
