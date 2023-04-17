@@ -44,7 +44,7 @@ class UserRepo
     }
 
 
-    public function delete(int $id): void
+    public function destroy(int $id): void
     {
         $user = $this->find($id);
         $user->delete();

@@ -6,6 +6,7 @@ use App\Http\Requests\User\Store;
 use App\Repository\UserRepo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
 class UserController extends Controller
@@ -33,6 +34,26 @@ class UserController extends Controller
         return view('users.index',compact('users','title'));
     }
 
+
+    public function destroy($id)
+    {
+        if (auth()->id() != $id){
+            $this->repo->destroy($id);
+            session()->flash('success', 'User deleted successfully.');
+            return redirect()->route('users.index');
+        } else {
+            session()->flash('warning', 'You can not delete your self');
+            return redirect()->route('users.index');
+        }
+
+    }
+
+    public function store(Store $request)
+    {
+        $data['password'] = bcrypt($request['password']);
+        $this->repo->store($data);
+    }
+
     public function edit($id)
     {
 
@@ -52,16 +73,11 @@ class UserController extends Controller
         } else {
             unset($validatedData['password']);
         }
+
+        $this->repo->update($id,$validatedData);
+        session()->flash('success', 'User updated successfully.');
+        return redirect()->route('users.index');
     }
 
-    public function destroy()
-    {
 
-    }
-
-    public function store(Store $request)
-    {
-        $data['password'] = bcrypt($request['password']);
-        $this->repo->store($data);
-    }
 }
