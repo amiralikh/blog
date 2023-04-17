@@ -50,31 +50,32 @@ class UserController extends Controller
 
     public function store(Store $request)
     {
-        $data['password'] = bcrypt($request['password']);
-        $this->repo->store($data);
+        $this->repo->store($request);
+        session()->flash('success', 'New user submitted successfully');
+        return redirect()->route('users.index');    }
+
+
+    public function create()
+    {
+        return view('users.create');
     }
 
     public function edit($id)
     {
-
+        $user = $this->repo->find($id);
+        return view('users.edit',compact('user'));
     }
 
     public function update($id,Request $request)
     {
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => ['required|string|email|max:255,unique,users,email,'.$id],
-            'password' => 'nullable|string|min:8|confirmed',
+            'email' => 'required|string|email|max:255,unique,users,email,'.$id,
+            'password' => 'nullable|string|min:8',
             'is_admin' => 'sometimes|boolean',
         ]);
 
-        if ($validatedData['password']) {
-            $validatedData['password'] = bcrypt($validatedData['password']);
-        } else {
-            unset($validatedData['password']);
-        }
-
-        $this->repo->update($id,$validatedData);
+        $this->repo->update($id,$request);
         session()->flash('success', 'User updated successfully.');
         return redirect()->route('users.index');
     }

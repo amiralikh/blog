@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class UserRepo
 {
@@ -26,9 +27,14 @@ class UserRepo
         return User::query()->doesntHave('comments')->paginate(10);
     }
 
-    public function store($data): void
+    public function store($request): void
     {
-        User::query()->create($data);
+        User::query()->create([
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'password' => Hash::make($request->input('password')),
+            'is_admin' => (bool)$request->input('is_admin'),
+        ]);
     }
 
 
@@ -37,10 +43,19 @@ class UserRepo
         return User::query()->findOrFail($id);
     }
 
-    public function update($id,$data): void
+    public function update($id,$request): void
     {
         $user = $this->find($id);
-        $user->update($data);
+        $user->update([
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'is_admin' => (bool)$request->input('is_admin'),
+        ]);
+        if ($request->input('password')){
+            $user->update([
+                'password' => Hash::make($request->input('password'))
+            ]);
+        }
     }
 
 
