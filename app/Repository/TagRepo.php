@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Models\Tag;
+use Illuminate\Support\Facades\DB;
 
 class TagRepo
 {
@@ -34,5 +35,15 @@ class TagRepo
     public function findTagById($id)
     {
         return Tag::query()->findOrFail($id);
+    }
+
+    public function commonTags()
+    {
+        return Tag::select('tags.*', DB::raw('count(post_tags.tag_id) as tag_count'))
+            ->join('post_tags', 'post_tags.tag_id', '=', 'tags.id')
+            ->groupBy('post_tags.tag_id', 'tags.id', 'tags.name', 'tags.created_at', 'tags.updated_at')
+            ->orderBy('tag_count', 'desc')
+            ->limit(5)
+            ->get();
     }
 }

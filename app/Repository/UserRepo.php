@@ -21,8 +21,34 @@ class UserRepo
 
 
     // users who have no comments
-    public function blindUsers()
+    public function blindUsers(): \Illuminate\Contracts\Pagination\LengthAwarePaginator
     {
         return User::query()->doesntHave('comments')->paginate(10);
     }
+
+    public function store($data): void
+    {
+        User::query()->create($data);
+    }
+
+
+    public function find(int $id): \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Builder|array|null
+    {
+        return User::query()->findOrFail($id);
+    }
+
+    public function update($id,$data): void
+    {
+        $user = $this->find($id);
+        $user->update($data);
+    }
+
+
+    public function delete(int $id): void
+    {
+        $user = $this->find($id);
+        $user->delete();
+    }
+
+
 }

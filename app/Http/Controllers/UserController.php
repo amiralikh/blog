@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\User\Store;
 use App\Repository\UserRepo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
@@ -29,5 +31,37 @@ class UserController extends Controller
         $users = $this->repo->blindUsers();
         $title = 'Inactive Users';
         return view('users.index',compact('users','title'));
+    }
+
+    public function edit($id)
+    {
+
+    }
+
+    public function update($id,Request $request)
+    {
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => ['required|string|email|max:255,unique,users,email,'.$id],
+            'password' => 'nullable|string|min:8|confirmed',
+            'is_admin' => 'sometimes|boolean',
+        ]);
+
+        if ($validatedData['password']) {
+            $validatedData['password'] = bcrypt($validatedData['password']);
+        } else {
+            unset($validatedData['password']);
+        }
+    }
+
+    public function destroy()
+    {
+
+    }
+
+    public function store(Store $request)
+    {
+        $data['password'] = bcrypt($request['password']);
+        $this->repo->store($data);
     }
 }
