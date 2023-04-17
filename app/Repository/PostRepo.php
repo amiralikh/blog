@@ -30,7 +30,9 @@ class PostRepo
 
     public function getPost($id)
     {
-        return Post::with('user','comments','tags')->findOrFail($id);
+        return Post::with(['user', 'comments' => function($query) {
+            $query->where('is_approved', 1);
+        }, 'tags'])->findOrFail($id);
     }
 
 
@@ -65,5 +67,21 @@ class PostRepo
             ->whereHas('tags', function ($query) use ($tag) {
                 $query->where('name', $tag);
             })->orderByDesc('created_at')->get();
+    }
+
+    public function top5Post()
+    {
+        return Post::with('user')->withCount('comments')
+            ->orderBy('comments_count', 'desc')
+            ->limit(5)
+            ->get();
+    }
+
+    public function topTagsPost()
+    {
+        return Post::with('user')->withCount('tags')
+            ->orderBy('tags_count', 'desc')
+            ->limit(5)
+            ->get();
     }
 }

@@ -133,16 +133,16 @@
                     </a>
                 </li>
             @endif
-            <li class="nav-item">
-                <a class="nav-link text-white " href="{{ url('/posts') }}">
+{{--            <li class="nav-item">--}}
+{{--                <a class="nav-link text-white " href="{{ url('/posts') }}">--}}
 
-                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="material-icons opacity-10">dataset</i>
-                    </div>
+{{--                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">--}}
+{{--                        <i class="material-icons opacity-10">dataset</i>--}}
+{{--                    </div>--}}
 
-                    <span class="nav-link-text ms-1">Posts</span>
-                </a>
-            </li>
+{{--                    <span class="nav-link-text ms-1">Posts</span>--}}
+{{--                </a>--}}
+{{--            </li>--}}
 
             <li class="nav-item">
                 <a class="nav-link text-white " href="{{ url('/comments') }}">
@@ -152,6 +152,27 @@
                     </div>
 
                     <span class="nav-link-text ms-1">Comments</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link text-white " href="{{ url('/users') }}">
+
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="material-icons opacity-10">groups</i>
+                    </div>
+
+                    <span class="nav-link-text ms-1">Users</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white " href="{{ url('/motionless-users') }}">
+
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="material-icons opacity-10">blind</i>
+                    </div>
+
+                    <span class="nav-link-text ms-1">Blind Users</span>
                 </a>
             </li>
         </ul>

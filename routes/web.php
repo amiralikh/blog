@@ -31,6 +31,8 @@ Route::middleware('auth')->group(function () {
     Route::post('comments/{id}/approve',[\App\Http\Controllers\CommentController::class,'approve'])->name('comments.approve');
     Route::get('comments/{id}/edit',[\App\Http\Controllers\CommentController::class,'edit'])->name('comments.edit');
     Route::delete('comments/{id}',[\App\Http\Controllers\CommentController::class,'destroy'])->name('comments.destroy');
+    Route::resource('users',\App\Http\Controllers\UserController::class);
+    Route::get('motionless-users',[\App\Http\Controllers\UserController::class,'blindUsers'])->name('blindUsers');
 
 });
 
